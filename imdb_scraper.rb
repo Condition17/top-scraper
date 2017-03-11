@@ -10,7 +10,7 @@ class IMDBScraper < Scraper
     @object.nil? ? new : @object
   end
 
-  def parse_content(links)
+  def parse_content
     content = []
     links.each do |link|
       page = Nokogiri::HTML(HTTParty.get(link))
@@ -19,6 +19,7 @@ class IMDBScraper < Scraper
       process_upper(page, movie, section.css('.vital'))
       process_lower(page, movie, page.css('.plot_summary'))
       content.push(movie.to_json)
+      puts movie.name
     end
     JSON.pretty_generate(content)
   end
